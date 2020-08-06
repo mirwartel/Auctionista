@@ -51,7 +51,6 @@ export default {
             images: [],
             imageFiles: null,
             DisplayPicNum: 0,
-            displayImage:'',
             valid: ""
         }
     },
@@ -129,8 +128,8 @@ export default {
                 reserve_price: this.reservePrice,
                 start_time: this.startTime,
                 end_time: this.endTime,
-                main_image: this.images[0],
-                second_image: this.images[0]
+                main_image: this.images[this.DisplayPicNum],
+                second_image: this.images[1 - this.DisplayPicNum]
             }
             let nowDate = new Date()
             nowDate.setHours(0, 0, 0, 0)
@@ -196,7 +195,6 @@ export default {
         this.imageFiles = null
         this.images = []
         this.DisplayPicNum= 0,
-        this.displayImage=''
         this.valid = ""
 
 
