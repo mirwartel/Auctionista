@@ -106,6 +106,7 @@ export default {
 
         async addNewAuction() {
 
+
             // LÄGG TILL FÖR KORT LÖSEN MM
             let auction = {
                 seller: this.$store.state.user.id,
@@ -129,26 +130,47 @@ export default {
                 },
                 body: JSON.stringify(auction)
             })
+            console.log(this.imageFiles);
+
             try {
-                response = await response.json()
-        
-                // if we created an entity we then
-                // send the image files
-                await fetch('/api/upload-files', {
-                  method: 'POST',
-                  body: this.imageFiles
-                });
-    
-              } 
-              catch {
-                console.warn('Could not create entity'); 
-              }
+
+              console.log("before respone");
+              //response = await response.json()
+      
+              // if we created an entity we then
+              // send the image files
+              console.log("before fetch");
+              await fetch('/api/upload-files', {
+                method: 'POST',
+                body: this.imageFiles
+              });
+  
+            } 
+            catch {
+              console.warn('Could not create entity'); 
+            }
     
             result = await result.json()
             this.$store.commit('appendAuction', result)
             this.confirmationMessage = this.title + ' has been added as an auction.'
-            this.valid = ""
+
               //clearing the fields
+
+              
+
+
+        }
+        else {
+             this.valid = "invalid Date, try again"
+             this.confirmationMessage = ""
+
+        }
+
+
+ 
+
+
+
         this.seller = ''
         this.title = ''
         this.description = ''
@@ -159,17 +181,8 @@ export default {
         this.secondImage = ''
         this.imageFiles = null
         this.images = []
+        this.valid = ""
 
-
-        }else {
-             this.valid = "invalid Date, try again"
-             this.confirmationMessage = ""
-
-        }
-
-
-
-       
 
     }
 }
