@@ -13,19 +13,13 @@ export default {
                     placeholder = "Enter start date">
                       <input required v-model = "endTime" type = "date"
                       placeholder = "Enter end date">
-                        <input required v-model = "mainImage" type = "text"
-                        placeholder = "Enter main img-url">
-                          <input required v-model = "secondImage" type = "text"
-                          placeholder = "Enter second img-url">
 
-                          <div>
-                          <label for="title">Title:</label>
-                          <input name="title" placeholder="Comfy sofa" v-model="title" required />
-                      </div>
-                      <div>
+
+
+
                           <label for="files">File to upload:</label>
                           <input type="file" name="files" accept=".png,.jpg,.jpeg,.gif,.bmp,.jfif" multiple required @change="filesChange($event.target.files)" />
-                      </div>
+
             
             
             <button>Add auction</button>
@@ -106,6 +100,7 @@ export default {
       
             // store formData to be sent later
             this.imageFiles = formData
+            console.log(this.images)
           },
 
 
@@ -119,8 +114,8 @@ export default {
                 reserve_price: this.reservePrice,
                 start_time: this.startTime,
                 end_time: this.endTime,
-                main_image: this.mainImage,
-                second_image: this.secondImage
+                main_image: this.images[0],
+                second_image: this.images[0]
             }
             let nowDate = new Date()
             nowDate.setHours(0, 0, 0, 0)
@@ -134,6 +129,21 @@ export default {
                 },
                 body: JSON.stringify(auction)
             })
+            try {
+                response = await response.json()
+        
+                // if we created an entity we then
+                // send the image files
+                await fetch('/api/upload-files', {
+                  method: 'POST',
+                  body: this.imageFiles
+                });
+    
+              } 
+              catch {
+                console.warn('Could not create entity'); 
+              }
+    
             result = await result.json()
             this.$store.commit('appendAuction', result)
             this.confirmationMessage = this.title + ' has been added as an auction.'
@@ -147,6 +157,8 @@ export default {
         this.endTime = ''
         this.mainImage = ''
         this.secondImage = ''
+        this.imageFiles = null
+        this.images = []
 
 
         }else {
@@ -154,6 +166,8 @@ export default {
              this.confirmationMessage = ""
 
         }
+
+
 
        
 
