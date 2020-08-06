@@ -14,11 +14,17 @@ export default {
                       <input required v-model = "endTime" type = "date"
                       placeholder = "Enter end date">
 
-
-
-
-                          <label for="files">File to upload:</label>
+                      <div v-if="images < 3">
+                          <label for="files">Upload up tp 2 files:</label>
                           <input type="file" name="files" accept=".png,.jpg,.jpeg,.gif,.bmp,.jfif" multiple required @change="filesChange($event.target.files)" />
+                          </div>
+                          <div v-else>
+  Maximum number of pictures upploaded
+</div>
+                          <input type="radio" id="pic1" v-model="DisplayPicNum" value="0">
+<label for="pic1">Select file 1 as display picture</label><br>
+<input type="radio" id="pic2" v-model="DisplayPicNum" value="1">
+<label for="pic2">Select file 2 as display picture</label><br>
 
             
             
@@ -44,10 +50,16 @@ export default {
             mainImage: '',
             images: [],
             imageFiles: null,
+            DisplayPicNum: 0,
+            displayImage:'',
             valid: ""
         }
     },
     methods: {
+
+
+
+ 
 
 
         create_UUID(){
@@ -78,7 +90,7 @@ export default {
             const formData = new FormData();
       
             // reset images array on file change
-            this.images = []
+            //this.images = []
       
             // append the files to FormData
             Array.from(Array(fileList.length).keys())
@@ -105,6 +117,8 @@ export default {
 
 
         async addNewAuction() {
+
+
 
 
             // LÄGG TILL FÖR KORT LÖSEN MM
@@ -181,6 +195,8 @@ export default {
         this.secondImage = ''
         this.imageFiles = null
         this.images = []
+        this.DisplayPicNum= 0,
+        this.displayImage=''
         this.valid = ""
 
 
