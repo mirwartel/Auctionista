@@ -41,6 +41,8 @@ const router = new VueRouter({
       name: "notfound",
       component: notFound
     }
+
+    
   ]
 });
 

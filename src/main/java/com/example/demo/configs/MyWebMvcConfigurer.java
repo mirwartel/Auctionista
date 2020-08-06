@@ -21,7 +21,7 @@ class MyWebMvcConfigurer implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("file:src/main/resources/static/")
                 .setCacheControl(CacheControl.noCache())
-                .resourceChain(true)
+                .resourceChain(false)
                 .addResolver(new PathResourceResolver() {
                     @Override
                     protected Resource getResource(String resourcePath,

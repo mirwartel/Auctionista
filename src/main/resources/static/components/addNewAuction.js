@@ -1,3 +1,5 @@
+
+
 export default {
     template: `
         <form @submit.prevent = "addNewAuction" class = "auctionform">
@@ -15,6 +17,15 @@ export default {
                         placeholder = "Enter main img-url">
                           <input required v-model = "secondImage" type = "text"
                           placeholder = "Enter second img-url">
+
+                          <div>
+                          <label for="title">Title:</label>
+                          <input name="title" placeholder="Comfy sofa" v-model="title" required />
+                      </div>
+                      <div>
+                          <label for="files">File to upload:</label>
+                          <input type="file" name="files" accept=".png,.jpg,.jpeg,.gif,.bmp,.jfif" multiple required @change="filesChange($event.target.files)" />
+                      </div>
             
             
             <button>Add auction</button>
@@ -37,10 +48,67 @@ export default {
             secondImage: '',
             confirmationMessage: '',
             mainImage: '',
+            images: [],
+            imageFiles: null,
             valid: ""
         }
     },
     methods: {
+
+
+        create_UUID(){
+
+            var dt = new Date().getTime();
+          
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          
+                var r = (dt + Math.random()*16)%16 | 0;
+          
+                dt = Math.floor(dt/16);
+          
+                return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+          
+            });
+          
+            return uuid;
+          
+          },
+
+
+        async filesChange(fileList) {
+            if (!fileList.length) return;
+
+
+      
+            // handle file changes
+            const formData = new FormData();
+      
+            // reset images array on file change
+            this.images = []
+      
+            // append the files to FormData
+            Array.from(Array(fileList.length).keys())
+              .map(x => {
+      
+                // create a new unique filename
+                const uuid = this.create_UUID()
+                // with regex
+                // const fileExt = fileList[x].name.replace(/[\w-]*/, '')
+      
+                let fileExt = fileList[x].name
+                fileExt = fileExt.slice(fileExt.lastIndexOf('.'))
+                const filename = uuid + fileExt
+      
+                // save image url in frontend array
+                this.images.push('/uploads/' + filename)
+                formData.append("files", fileList[x], filename);
+              });
+      
+            // store formData to be sent later
+            this.imageFiles = formData
+          },
+
+
         async addNewAuction() {
 
             // LÄGG TILL FÖR KORT LÖSEN MM
